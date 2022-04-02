@@ -1,0 +1,53 @@
+create database margn_db;
+use margn_db;
+create user 'margn'@'%' identified by '1234';
+grant all privileges on margn_db to 'margn'@'%';
+create table user(
+	user_no int auto_increment,
+	user_id varchar(20),
+    user_pw varchar(20),
+    user_name varchar(20),
+    user_email varchar(20),
+    user_gender char check(user_gender in('m','f')),
+    primary key(user_no)
+);
+
+desc user;
+create table bbs(
+	bbs_id int auto_increment,
+    bbs_writer varchar(20),
+    bbs_title varchar(20),
+    bbs_content text,
+    bbs_pw varchar(20),
+    bbs_date date default (current_date),
+    bbs_enter int default 0,
+    bbs_available boolean default true,
+    primary key(bbs_id)
+);
+create table review(
+	review_id int auto_increment,
+    bbs_id int,
+    review_writer varchar(20),
+    review_content varchar(255),
+    review_pw varchar(20),
+    primary key(review_id),
+    foreign key(bbs_id) references bbs(bbs_id)
+    on delete cascade
+);
+use margn_db;
+show tables;
+select * from user;
+select * from review;
+drop table review;
+drop table bbs;
+drop table user;
+select user_id, user_pw from user where user_id = 'test123' and user_pw ='1234';
+select * from bbs;
+desc bbs;
+
+
+insert into bbs(bbs_writer, bbs_title, bbs_content, bbs_pw)
+		values('test', 'test title', 'test write content','1234');
+        
+select * from bbs;
+delete from bbs;
